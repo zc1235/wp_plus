@@ -582,7 +582,7 @@ export default {
     showUploadPopup: false,
     uploadProgress: null,
     uploadQueue: [],
-    backgroundImageUrl: "/assets/bg-light.webp",
+    backgroundImageUrl: "/assets/bg-light.jpg",
     needLogin: false,
     isGuest: true, // 默认为游客状态
     isLoggedIn: false,
