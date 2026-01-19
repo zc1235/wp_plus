@@ -95,172 +95,30 @@ export default {
 };
 </script>
 
+<!-- 方式1：在 TransferProgress.vue 中修改根节点样式 -->
 <style scoped>
 .transfer-progress-container {
-  display: inline-block;
+  /* 替换原有的 display: inline-block */
+  display: block !important; 
+  /* 强制固定在页面右上角，避免位置偏移 */
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  /* 加高z-index，避免被其他元素遮挡 */
+  z-index: 9999 !important;
+  /* 加红色边框，可视化元素范围（调试用） */
+  border: 1px solid red !important;
+  padding: 10px !important;
 }
 
+/* 同时确保按钮本身可见 */
 .transfer-progress-button {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #333;
-  transition: all 0.3s ease;
-}
-
-.transfer-progress-button:hover {
-  background-color: #e0e0e0;
-}
-
-.transfer-progress-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: flex-end;
-  z-index: 1000;
-}
-
-.transfer-progress-content {
-  width: 350px;
-  max-width: 90vw;
-  height: 100%;
-  background-color: white;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  animation: slideInRight 0.3s ease;
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-.transfer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #eee;
-  background-color: #f9f9f9;
-}
-
-.transfer-header h3 {
-  margin: 0;
-  font-size: 18px;
-  color: #333;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #999;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.close-btn:hover {
-  color: #333;
-  background-color: #e0e0e0;
-  border-radius: 50%;
-}
-
-.transfer-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-}
-
-.no-transfers {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: #999;
-  font-style: italic;
-}
-
-.transfer-item {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.transfer-item:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.transfer-info {
-  margin-bottom: 8px;
-}
-
-.transfer-name {
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.transfer-status {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: #666;
-}
-
-.transfer-percent {
-  font-weight: bold;
-  color: #007bff;
-}
-
-.progress-bar-container {
-  width: 100%;
-  height: 6px;
-  background-color: #f0f0f0;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background-color: #007bff;
-  transition: width 0.3s ease;
-}
-
-.progress-bar.uploading {
-  background-color: #007bff;
-}
-
-.progress-bar.completed {
-  background-color: #28a745;
-}
-
-.progress-bar.failed {
-  background-color: #dc3545;
+  /* 加背景色，避免和页面背景融合 */
+  background-color: #f0f0f0 !important;
+  /* 强制显示按钮内的SVG图标 */
+  color: #333 !important; /* SVG的stroke是currentColor，设置颜色确保可见 */
+  /* 加最小宽高，避免按钮塌陷 */
+  min-width: 40px !important;
+  min-height: 40px !important;
 }
 </style>
