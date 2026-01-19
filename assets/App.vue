@@ -5,10 +5,7 @@
       @drop.prevent="onDrop"
       :style="{ backgroundImage: `url('${backgroundImageUrl}')` }"
   >
-    <!-- 底部进度条保留以兼容旧功能，但不显示 -->
-    <progress v-if="false" v-show="false" :value="uploadProgress" max="100"></progress>
-    
-
+    <progress v-if="uploadProgress !== null" :value="uploadProgress" max="100"></progress>
     <UploadPopup v-model="showUploadPopup" @upload="onUploadClicked" @createFolder="createFolder"></UploadPopup>
 
 
@@ -103,14 +100,6 @@
 
       <!-- 右侧控件容器 -->
       <div class="app-bar-right">
-        <!-- 传输进度按钮 -->
-        <div class="transfer-progress-container">
-          <TransferProgress
-            :transfers="transferProgressList"
-            :showTransferProgress="true"
-          />
-        </div>
-        
         <!-- 登录/用户状态按钮 -->
         <div class="user-status-container">
           <button class="user-status-button" @click="showLoginModal" :title="isLoggedIn ? '切换用户' : '登录'">
@@ -423,8 +412,8 @@
             :class="{ 'selected': folderDialog.selectedFolder === folder.value }"
             style="padding: 10px; cursor: pointer; border-bottom: 1px solid #eee;"
             :style="{
-              'backgroundColor': folderDialog.selectedFolder === folder.value ? '#e3f2fd' : 'transparent',
-              'fontWeight': folderDialog.selectedFolder === folder.value ? 'bold' : 'normal'
+              backgroundColor: folderDialog.selectedFolder === folder.value ? '#e3f2fd' : 'transparent',
+              fontWeight: folderDialog.selectedFolder === folder.value ? 'bold' : 'normal'
             }"
           >
             <span v-text="folder.display"></span>
@@ -573,7 +562,6 @@ import MimeIcon from "./MimeIcon.vue";
 import UploadPopup from "./UploadPopup.vue";
 import Footer from "./Footer.vue";
 import MediaPreview from "./MediaPreview.vue";
-import TransferProgress from "./TransferProgress.vue";
 
 export default {
   data: () => ({
@@ -594,9 +582,6 @@ export default {
     showUploadPopup: false,
     uploadProgress: null,
     uploadQueue: [],
-    // 新增传输进度列表
-    transferProgressList: [],
-    nextTransferId: 1,
     backgroundImageUrl: "/assets/bg-light.jpg",
     needLogin: false,
     isGuest: true, // 默认为游客状态
@@ -658,16 +643,6 @@ export default {
     // 粘贴按钮相关
     isNearPasteButton: false
   }),
-
-  components: {
-    Dialog,
-    Menu,
-    MimeIcon,
-    UploadPopup,
-    Footer,
-    MediaPreview,
-    TransferProgress
-  },
 
   computed: {
     filteredFiles() {
@@ -1947,28 +1922,10 @@ ${fileNames}
       try {
         const uploadUrl = `/api/write/items/${basedir}${file.name}`;
         const headers = {};
-        // 创建新的传输进度记录
-      const transferId = this.nextTransferId++;
-      this.transferProgressList.push({
-        id: transferId,
-        name: file.name,
-        loaded: 0,
-        total: file.size,
-        progress: 0,
-        status: 'uploading'
-      });
-      
-      const onUploadProgress = (progressEvent) => {
+        const onUploadProgress = (progressEvent) => {
           var percentCompleted =
             (progressEvent.loaded * 100) / progressEvent.total;
           this.uploadProgress = percentCompleted;
-          
-          // 更新传输进度列表中的对应项
-          const transfer = this.transferProgressList.find(t => t.id === transferId);
-          if (transfer) {
-            transfer.loaded = progressEvent.loaded;
-            transfer.progress = percentCompleted;
-          }
         };
         if (thumbnailDigest) headers["fd-thumbnail"] = thumbnailDigest;
         if (file.size >= SIZE_LIMIT) {
@@ -1986,30 +1943,7 @@ ${fileNames}
           })
           .catch(() => { });
         console.log(`Upload ${file.name} failed`, error);
-        
-        // 更新传输进度列表中的状态为失败
-        const transfer = this.transferProgressList.find(t => t.id === transferId);
-        if (transfer) {
-          transfer.status = 'failed';
-        }
       }
-      
-      // 更新传输进度列表中的状态为完成
-      const transfer = this.transferProgressList.find(t => t.id === transferId);
-      if (transfer) {
-        transfer.loaded = transfer.total;
-        transfer.progress = 100;
-        transfer.status = 'completed';
-        
-        // 5秒后自动移除完成的传输记录
-        setTimeout(() => {
-          const index = this.transferProgressList.findIndex(t => t.id === transferId);
-          if (index !== -1) {
-            this.transferProgressList.splice(index, 1);
-          }
-        }, 5000);
-      }
-      
       setTimeout(this.processUploadQueue);
     },
 
