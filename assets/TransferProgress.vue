@@ -6,7 +6,7 @@
         <polyline points="17,8 12,3 7,8"/>
         <line x1="12" y1="3" x2="12" y2="15"/>
       </svg>
-      <span v-if="activeTransfers > 0">{{ activeTransfers }} 项</span>
+      <span>{{ activeTransfers > 0 ? activeTransfers + ' 项' : '' }}</span>
     </button>
     
     <Teleport to="body">
