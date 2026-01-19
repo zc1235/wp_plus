@@ -5,8 +5,13 @@
       @drop.prevent="onDrop"
       :style="{ backgroundImage: `url('${backgroundImageUrl}')` }"
   >
-    <progress v-if="uploadProgress !== null" :value="uploadProgress" max="100"></progress>
-    <UploadPopup v-model="showUploadPopup" @upload="onUploadClicked" @createFolder="createFolder"></UploadPopup>
+<!-- 新第8行代码 -->
+<TransferProgress 
+  v-if="uploadProgress !== null" 
+  :progress="uploadProgress" 
+  :max="100"
+  class="upload-progress"
+></TransferProgress>    <UploadPopup v-model="showUploadPopup" @upload="onUploadClicked" @createFolder="createFolder"></UploadPopup>
 
 
 
@@ -562,6 +567,7 @@ import MimeIcon from "./MimeIcon.vue";
 import UploadPopup from "./UploadPopup.vue";
 import Footer from "./Footer.vue";
 import MediaPreview from "./MediaPreview.vue";
+import TransferProgress from "./TransferProgress.vue";
 
 export default {
   data: () => ({
@@ -2506,6 +2512,7 @@ ${fileNames}
     UploadPopup,
     Footer,
     MediaPreview,
+    TransferProgress,
   },
 };
 </script>
