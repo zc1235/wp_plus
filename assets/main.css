@@ -140,6 +140,14 @@ progress {
   width: 100%;
 }
 
+/* 顶部传输进度按钮 */
+.transfer-progress-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
+
 button.circle {
   z-index: 1;
   border-radius: 50px;
@@ -565,6 +573,26 @@ button {
   gap: 8px;
   margin-left: auto;
   flex-shrink: 0;
+}
+
+/* 顶部传输进度按钮样式 */
+.app-bar .transfer-progress-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.3s ease;
+  min-height: 32px;
+}
+
+.app-bar .transfer-progress-button:hover {
+  background-color: #e0e0e0;
 }
 
 /* 菜单按钮容器 */
