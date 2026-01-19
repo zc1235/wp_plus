@@ -421,7 +421,7 @@
         </div>
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
           <button @click="cancelFolderSelection" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 4px;">取消</button>
-          <button @click="confirmFolderSelection" :disabled="!folderDialog.selectedFolder" :style="{ padding: '8px 16px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', opacity: folderDialog.selectedFolder ? 1 : 0.5 }">确定</button>
+          <button @click="confirmFolderSelection" :disabled="!folderDialog.selectedFolder" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; opacity: folderDialog.selectedFolder ? 1 : 0.5;">确定</button>
         </div>
       </div>
     </Dialog>
@@ -2506,6 +2506,7 @@ ${fileNames}
     UploadPopup,
     Footer,
     MediaPreview,
+    TransferProgress,
   },
 };
 </script>
